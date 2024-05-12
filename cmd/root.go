@@ -1,12 +1,10 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
 	"fmt"
 	"os"
 
+	"github.com/gxanshu/go-transfer/receiver"
 	"github.com/gxanshu/go-transfer/sender"
 	"github.com/spf13/cobra"
 )
@@ -32,8 +30,18 @@ var versionCmd = &cobra.Command{
 var sendCommand = &cobra.Command{
 	Use:   "send",
 	Short: "send a file to another computer",
+	Long:  "Provide filename and it will return IP to receive from",
 	Run: func(cmd *cobra.Command, args []string) {
 		sender.Send(args[0])
+	},
+}
+
+var receiveCommand = &cobra.Command{
+	Use:   "receive",
+	Short: "receive a file from another computer",
+	Long:  "Fetch file from sender computer",
+	Run: func(cmd *cobra.Command, args []string) {
+		receiver.Receive(args[0], args[1])
 	},
 }
 
@@ -47,14 +55,7 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.go-transfer.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(sendCommand)
+	rootCmd.AddCommand(receiveCommand)
 }
